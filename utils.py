@@ -1,0 +1,1 @@
+#Any helper functions that don't naturally fit into the above categories could go here. For example, you could have a function that formats numbers into currency.

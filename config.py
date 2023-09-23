@@ -1,0 +1,1 @@
+#Stores any configuration variables you might have. For instance, the path to your Excel files could be a config variable.
