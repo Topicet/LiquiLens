@@ -2,7 +2,7 @@
 
 from dash.dependencies import Input, Output, State
 from plotly import graph_objects as go
-from data_processing import *
+from data_processing import process_data
 from dash import Dash
 
 def register_callbacks(app: Dash):
@@ -12,8 +12,8 @@ def register_callbacks(app: Dash):
         [State('category-dropdown', 'value')]
     )
     @app.callback(
-        Output('spending-bar-graph', 'figure'),
-        [Input('update-button', 'value')]
+    Output('some-output-div', 'children'),
+    [Input('update-data-button', 'n_clicks')]
     )
 
     def update_transaction_dict(n_clicks, selected_category):
@@ -24,15 +24,13 @@ def register_callbacks(app: Dash):
         # You can access the selected_category which holds the category selected from the dropdown
         # transaction_dict[unknown_description] = selected_category
         
-        return f"Updated category: {selected_category}"
-    
-    def update_spending_bar_graph(n_clicks):
+        return f"Updated category: {selected_category}"   
 
-        figure = go.Figure(data=[
-            go.Bar(x=list(category_amount_dict.keys()), y=list(category_amount_dict.values()))
-        ])
-        figure.update_layout(title='Spending by Category',
-                             xaxis_title='Category',
-                             yaxis_title='Amount ($)')
-        
-        return figure
+    
+
+    def update_data(n_clicks):
+        if n_clicks is not None:
+            category_amount_dict, unknown_transactions = process_data()
+        return f"Data updated! Categories: {category_amount_dict}, Unknowns: {unknown_transactions}"
+    
+    
