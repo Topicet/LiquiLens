@@ -1,6 +1,7 @@
 #Handles all the data reading and manipulation tasks. Uses Pandas to categorize transactions and calculate financial metrics.
 import os
 import pandas as pd
+import re
 from datetime import datetime
 from transactionDictionary import transaction_dict
 
@@ -9,7 +10,7 @@ def process_data():
     category_amount_dict = {}
     
     # Initialize a list to store descriptions of unknown transactions
-    unknown_transactions = []
+    unknown_transactions = {}
 
     # Specify the CSV file containing transaction data
     USAA_FILE = "bk_download(26).csv"
@@ -24,12 +25,15 @@ def process_data():
         description = row['Description']
         amount = row['Amount']
 
+        if regexSearch_Simmons(description):
+            continue
+
         # Lookup category in the transaction dictionary, default to "Unknown" if not found
         category = transaction_dict.get(description, "Unknown")
 
         # Check if the category is None (not found)
-        if category is None:
-            unknown_transactions.append(description)
+        if category == "Unknown":
+            unknown_transactions[description] = amount            
             continue
 
         if category in category_amount_dict:
@@ -38,3 +42,11 @@ def process_data():
             category_amount_dict[category] = amount
 
     return category_amount_dict, unknown_transactions
+
+
+def regexSearch_Simmons(description):
+    pattern = re.compile(r'(?i)simmons?')
+    if pattern.search(description):
+        return True
+    else:
+        return False

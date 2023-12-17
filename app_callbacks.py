@@ -15,6 +15,6 @@ def register_callbacks(app: Dash):
         category_amount_dict, unknown_transactions = {}, {}  # Initialize to empty dictionaries
         if n_clicks is not None:
             category_amount_dict, unknown_transactions = process_data()
-        return f"Data updated! Categories: {category_amount_dict}, Unknowns: {unknown_transactions}"
+        return f"Data updated! Categories: {category_amount_dict}, \n Unknowns: {unknown_transactions}"
     
     
