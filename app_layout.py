@@ -7,12 +7,7 @@ from transactionDictionary import transaction_dict
 unique_categories = list(set(transaction_dict.values()))
 
 layout = html.Div([
-    dcc.Dropdown(
-        id='category-dropdown',
-        options=[{'label': cat, 'value': cat} for cat in unique_categories],
-        value=unique_categories[0]  # default value
-    ),    
+    html.Button('Update Data', id='update-data-button'),
+    html.Div(id='output-div')
 ])
 
-# In app_layout.py
-html.Button('Update Data', id='update-data-button'),
