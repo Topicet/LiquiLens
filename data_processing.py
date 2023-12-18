@@ -41,6 +41,13 @@ def process_data():
         else:
             category_amount_dict[category] = amount
 
+    # Sort the dictionary by value in descending order
+    category_amount_dict = {k: v for k, v in sorted(category_amount_dict.items(), key=lambda item: item[1], reverse=True)}
+
+    for category, amount in category_amount_dict.items():
+        # Round to 2 decimal places
+        category_amount_dict[category] = round(amount, 2)
+
     return category_amount_dict, unknown_transactions
 
 
