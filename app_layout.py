@@ -9,17 +9,21 @@ layout = html.Div([
     dcc.Graph(id='bar-graph'),  # This is where the graph will be displayed
     html.Div(id='output-div'),
 
+    html.Div(id='intermediate_storage', style={'display': 'none'}),
+
     html.Div([
-        html.Div(id='unknown-transactions'),  # Display a list of unknown transactions
         dcc.Dropdown(
-            id='unknown-transactions-dropdown',  # Dropdown to select unknown transactions
+            id='unknown_transactions_dropdown',  # Dropdown to select unknown transactions
+            options=[],  # Initially empty, will be populated dynamically
             placeholder='Select an unknown transaction',
         ),
         dcc.Dropdown(
-            id='category-dropdown',  # Dropdown to select categories
+            id='category_dropdown',  # Dropdown to select categories
             options=[{'label': category, 'value': category} for category in predefined_categories],
             placeholder='Select a category',
         ),
-        html.Button('Assign Category', id='assign-category-button', n_clicks=0),
+        html.Button('Assign Category', id='assign_category_button', n_clicks=0),
+
+        html.Div(id='assignment_output')  # This Div will display the result of the assignment
     ])
 ])

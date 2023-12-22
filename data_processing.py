@@ -33,7 +33,10 @@ def process_data():
 
         # Check if the category is None (not found)
         if category == "Unknown":
-            unknown_transactions[description] = amount            
+            if description in unknown_transactions:
+                unknown_transactions[description] += amount
+            else:
+                unknown_transactions[description] = amount       
             continue
 
         if category in category_amount_dict:
@@ -48,6 +51,7 @@ def process_data():
         # Round to 2 decimal places
         category_amount_dict[category] = round(amount, 2)
 
+    
     return category_amount_dict, unknown_transactions
 
 

@@ -1,6 +1,7 @@
 #Houses the logic for the interactive components of your Dash app. For example, if you have a dropdown to select a date range, the callback to update your graphs would go here.
 
 from dash.dependencies import Input, Output, State
+import json
 from plotly import graph_objects as go
 from data_processing import process_data
 from dash import Dash
@@ -8,16 +9,16 @@ from transactionDictionary import add_transaction
 from transactionDictionary import transaction_dict
 
 predefined_categories = sorted(list(set(transaction_dict.values())))
-unknown_transactions = {}
 
 def register_callbacks(app: Dash):
     @app.callback(
-        Output('bar-graph', 'figure'),  # Update the 'bar-graph' component
-        [Input('update-data-button', 'n_clicks')]  # Triggered by 'update-data-button'
+        Output('bar-graph', 'figure'),  # Output for the bar graph
+        Output('intermediate_storage', 'children'),  # Output for storing unknown transactions
+        [Input('update-data-button', 'n_clicks')]  # Button to update data
     )
     def update_bar_graph(n_clicks):
         if n_clicks is not None:
-            category_amount_dict, unknown_transactions = process_data()  # Ignore 'unknown_transactions' for now
+            category_amount_dict, unknown_transactions = process_data()
 
             # Extract categories and corresponding amounts from the dictionary
             categories = list(category_amount_dict.keys())
@@ -47,22 +48,37 @@ def register_callbacks(app: Dash):
                     )
             )
 
-            return bar_graph
-        else:
-            return {}
+            return bar_graph, json.dumps(unknown_transactions)
+        else: return {}
+
 
     @app.callback(
-        Input('assign-category-button', 'n_clicks'),
-        Output('unknown-transactions', 'children'),
-        Output('unknown-transactions-dropdown', 'options'),
-        Output('category-dropdown', 'options'),
-        Output('category-dropdown', 'value'),
-        State('category-dropdown', 'value'),
-        State('unknown-transactions-dropdown', 'value'),
-        State('unknown-transactions', 'children'),
+    Output('unknown_transactions_dropdown', 'options'),
+    [Input('intermediate_storage', 'children')]
+)
+    def update_unknown_transactions_dropdown(json_data):
+        transactions = json.loads(json_data)
+        options = [{'label': key, 'value': key} for key in transactions.keys()]
+        return options
+
+
+    @app.callback(
+        Output('assignment_output', 'children'),
+        Output('intermediate_storage', 'children'),  # Update the intermediate storage
+        Input('assign_category_button', 'n_clicks'),
+        State('category_dropdown', 'value'),
+        State('unknown_transactions_dropdown', 'value'),
+        State('intermediate_storage', 'children')  # Current state of unknown transactions
     )
-    def assign_category(n_clicks, selected_category, unknown_transactions):
-        if n_clicks and selected_category and unknown_transactions:
-            # Update the data structure with the selected category
-            add_transaction(unknown_transactions, selected_category)
-        return unknown_transactions, [{'label': category, 'value': category} for category in predefined_categories], None
+    def assign_category(n_clicks, selected_category, selected_transaction, json_data):
+        if n_clicks and selected_category and selected_transaction:
+            add_transaction(selected_transaction, selected_category)
+
+            # Load the current unknown transactions, remove the assigned one, and update the list
+            current_transactions = json.loads(json_data)
+            if selected_transaction in current_transactions:
+                del current_transactions[selected_transaction]
+
+            updated_transactions_json = json.dumps(current_transactions)
+            return f"Assigned {selected_transaction} to {selected_category}", updated_transactions_json
+        return "No assignment made", json_data
