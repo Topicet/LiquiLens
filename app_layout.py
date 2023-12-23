@@ -1,7 +1,9 @@
 # Contains the layout of your Dash app. All your HTML and Dash components would go here.
 from dash import dcc, html
 from transactionDictionary import transaction_dict
-import dash_table
+from dash import dash_table
+import pandas as pd
+
 
 predefined_categories = sorted(list(set(transaction_dict.values())))
 
@@ -12,6 +14,24 @@ layout = html.Div([
 
     html.Div(id='intermediate_storage', style={'display': 'none'}),
     html.Div(id='updated_intermediate_storage', style={'display': 'none'}),
+
+    
+    dash_table.DataTable(
+        id='category-spending-table',
+        columns=pd.DataFrame,  # Empty columns initially
+        data= pd.DataFrame,  # Empty data initially
+        style_cell={'textAlign': 'left'},
+        style_header={
+            'backgroundColor': 'white',
+            'fontWeight': 'bold'
+        },
+        style_data_conditional=[
+            {
+                'if': {'row_index': 'odd'},
+                'backgroundColor': 'rgb(248, 248, 248)'
+            }
+        ]
+    ),
 
 
     html.Div([

@@ -62,9 +62,6 @@ def process_data():
 def createDataTable():
     # Initialize a dictionary to store category-wise total amounts
     category_amount_dict = {}
-    
-    # Initialize a list to store descriptions of unknown transactions
-    unknown_transactions = {}
 
     positiveCashFlow = 0
     negativeCashFlow = 0
@@ -94,11 +91,7 @@ def createDataTable():
         category = transaction_dict.get(description, "Unknown")
 
         # Check if the category is None (not found)
-        if category == "Unknown":
-            if description in unknown_transactions:
-                unknown_transactions[description] += amount
-            else:
-                unknown_transactions[description] = amount       
+        if category == "Unknown":   
             continue
 
         if category in category_amount_dict:
@@ -111,19 +104,41 @@ def createDataTable():
         else:
             negativeCashFlow += amount
 
-            
 
+
+    #Dictionary for the panda dataframe
     # Sort the dictionary by value in descending order
     category_amount_dict = {k: v for k, v in sorted(category_amount_dict.items(), key=lambda item: item[1], reverse=True)}
 
-    for category, amount in category_amount_dict.items():
-        # Round to 2 decimal places
-        category_amount_dict[category] = round(amount, 2)
+    # Iterate over the dictionary and update each value
+    for key in category_amount_dict:
+        category_amount_dict[key] /= positiveCashFlow
+
+    income_to_expense_ratio = abs(negativeCashFlow / positiveCashFlow)
+    netCashFlow = positiveCashFlow + negativeCashFlow
 
     
+    headerDictionary = {'positiveCashFlow': positiveCashFlow, 'negativeCashFlow': negativeCashFlow, 'netCashFlow': netCashFlow, 'income_to_expense_ratio': income_to_expense_ratio}
 
     
-    return category_amount_dict, unknown_transactions
+    # Convert the header dictionary into a DataFrame
+    header_df = pd.DataFrame([headerDictionary])
+    
+    # Convert the category amounts dictionary into a DataFrame
+    categories_df = pd.DataFrame(list(category_amount_dict.items()), columns=['Category', 'Amount'])
+    categories_df['Percentage'] = categories_df['Amount'] / positiveCashFlow * 100  # Calculate percentage
+    
+    # Merge both DataFrames into a single one for the DataTable
+    # The header_df will have one row, so we can concatenate with categories_df
+    final_df = pd.concat([header_df, categories_df], ignore_index=True)
+
+    # DataTable expects a list of dictionaries
+    data_for_table = final_df.to_dict('records')
+    
+    # Define the columns for the DataTable
+    columns_for_table = [{"name": col, "id": col} for col in final_df.columns]
+
+    return categories_df, header_df
 
 
 def regexSearch_Simmons(description):

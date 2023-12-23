@@ -3,12 +3,13 @@
 from dash.dependencies import Input, Output, State
 import json
 from plotly import graph_objects as go
-from data_processing import process_data
+from data_processing import *
 from dash import Dash
 import dash
 from transactionDictionary import add_transaction
 from dash.exceptions import PreventUpdate
 from transactionDictionary import transaction_dict
+import pandas as pd
 
 predefined_categories = sorted(list(set(transaction_dict.values())))
 
@@ -54,12 +55,18 @@ def register_callbacks(app: Dash):
         else: return {}
 
     @app.callback(
-        Output('category-spending-table', 'children'),
-        Input('update-data-button', 'n_clicks'),
+        [Output('category-spending-table', 'columns'),
+        Output('category-spending-table', 'data')],
+        [Input('update-data-button', 'n_clicks')]
     )
-    def update_table(transactions):
+    def update_table(n_clicks):
+        if n_clicks is None:
+            raise PreventUpdate  # If button is not clicked, do not update the table.
+        # Assume createDataTable() returns a DataFrame.
+        columns, data = createDataTable()
+        return columns, data
         
-        return None
+
         
 
 
