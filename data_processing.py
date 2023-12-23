@@ -13,7 +13,7 @@ def process_data():
     unknown_transactions = {}
 
     # Specify the CSV file containing transaction data
-    USAA_FILE = "bk_download(26).csv"
+    USAA_FILE = "bk_download(27).csv"
 
     current_month = datetime.now().strftime('%B')
     os.chdir(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{current_month}")
@@ -24,8 +24,13 @@ def process_data():
     for index, row in bank_dataframe.iterrows():
         description = row['Description']
         amount = row['Amount']
+        status = row['Status']
 
+        # Skip Simmons Statements
         if regexSearch_Simmons(description):
+            continue
+        #Skip pending transactions
+        if status == "Pending":
             continue
 
         # Lookup category in the transaction dictionary, default to "Unknown" if not found

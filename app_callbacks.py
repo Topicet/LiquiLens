@@ -5,7 +5,9 @@ import json
 from plotly import graph_objects as go
 from data_processing import process_data
 from dash import Dash
+import dash
 from transactionDictionary import add_transaction
+from dash.exceptions import PreventUpdate
 from transactionDictionary import transaction_dict
 
 predefined_categories = sorted(list(set(transaction_dict.values())))
@@ -54,31 +56,49 @@ def register_callbacks(app: Dash):
 
     @app.callback(
     Output('unknown_transactions_dropdown', 'options'),
-    [Input('intermediate_storage', 'children')]
+    Input('intermediate_storage', 'children'),
+    Input('updated_intermediate_storage', 'children'),
 )
-    def update_unknown_transactions_dropdown(json_data):
-        transactions = json.loads(json_data)
+    def update_unknown_transactions_dropdown(json_data, new_json_data):
+
+        ctx = dash.callback_context
+
+        if not ctx.triggered:
+            raise PreventUpdate
+        
+        trigger_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        
+        if trigger_id == 'intermediate_storage':
+            transactions = json.loads(json_data)
+
+        elif trigger_id == 'updated_intermediate_storage':
+            transactions = json.loads(new_json_data)
+
         options = [{'label': key, 'value': key} for key in transactions.keys()]
         return options
 
 
     @app.callback(
         Output('assignment_output', 'children'),
-        Output('intermediate_storage', 'children'),  # Update the intermediate storage
+        Output('updated_intermediate_storage', 'children'),  # Output for storing unknown transactions
         Input('assign_category_button', 'n_clicks'),
+        Input('intermediate_storage', 'children'),
         State('category_dropdown', 'value'),
         State('unknown_transactions_dropdown', 'value'),
-        State('intermediate_storage', 'children')  # Current state of unknown transactions
     )
-    def assign_category(n_clicks, selected_category, selected_transaction, json_data):
-        if n_clicks and selected_category and selected_transaction:
-            add_transaction(selected_transaction, selected_category)
+    def assign_category(n_clicks, json_data, selected_category, selected_unknown_transaction):
+        if n_clicks and selected_category and selected_unknown_transaction:
+            add_transaction(selected_unknown_transaction, selected_category)
 
-            # Load the current unknown transactions, remove the assigned one, and update the list
-            current_transactions = json.loads(json_data)
-            if selected_transaction in current_transactions:
-                del current_transactions[selected_transaction]
+            # Load the JSON data into a Python object
+            data = json.loads(json_data)
 
-            updated_transactions_json = json.dumps(current_transactions)
-            return f"Assigned {selected_transaction} to {selected_category}", updated_transactions_json
-        return "No assignment made", json_data
+            # Check if the selected transaction is in the dictionary
+            if selected_unknown_transaction in data:
+                # Remove the selected transaction
+                del data[selected_unknown_transaction]
+
+            # Dump the updated data back into a JSON string
+            json_data = json.dumps(data)
+
+        return None, json_data

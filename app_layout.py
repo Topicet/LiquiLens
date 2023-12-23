@@ -1,6 +1,7 @@
 # Contains the layout of your Dash app. All your HTML and Dash components would go here.
 from dash import dcc, html
 from transactionDictionary import transaction_dict
+import dash_table
 
 predefined_categories = sorted(list(set(transaction_dict.values())))
 
@@ -10,6 +11,8 @@ layout = html.Div([
     html.Div(id='output-div'),
 
     html.Div(id='intermediate_storage', style={'display': 'none'}),
+    html.Div(id='updated_intermediate_storage', style={'display': 'none'}),
+
 
     html.Div([
         dcc.Dropdown(
