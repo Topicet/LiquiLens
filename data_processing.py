@@ -5,6 +5,7 @@ import re
 from datetime import datetime
 from transactionDictionary import transaction_dict
 
+
 def process_data():
     # Initialize a dictionary to store category-wise total amounts
     category_amount_dict = {}
@@ -123,14 +124,20 @@ def createDataTable():
     
     # Convert the header dictionary into a DataFrame
     header_df = pd.DataFrame([headerDictionary])
+    header_columns = [{"name": col, "id": col} for col in header_df.columns]
+    header_data = header_df.to_dict('records')
     
     # Convert the category amounts dictionary into a DataFrame
     categories_df = pd.DataFrame(list(category_amount_dict.items()), columns=['Category', 'Amount'])
     categories_df['Percentage'] = categories_df['Amount'] / positiveCashFlow * 100  # Calculate percentage
+
+    categories_columns = [{"name": col, "id": col} for col in categories_df.columns]
+    categories_data = categories_df.to_dict('records')
     
     # Merge both DataFrames into a single one for the DataTable
     # The header_df will have one row, so we can concatenate with categories_df
     final_df = pd.concat([header_df, categories_df], ignore_index=True)
+
 
     # DataTable expects a list of dictionaries
     data_for_table = final_df.to_dict('records')
@@ -138,7 +145,8 @@ def createDataTable():
     # Define the columns for the DataTable
     columns_for_table = [{"name": col, "id": col} for col in final_df.columns]
 
-    return categories_df, header_df
+
+    return header_columns, header_data, categories_columns, categories_data
 
 
 def regexSearch_Simmons(description):
@@ -147,3 +155,6 @@ def regexSearch_Simmons(description):
         return True
     else:
         return False
+
+
+createDataTable()

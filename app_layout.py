@@ -18,8 +18,8 @@ layout = html.Div([
     
     dash_table.DataTable(
         id='category-spending-table',
-        columns=pd.DataFrame,  # Empty columns initially
-        data= pd.DataFrame,  # Empty data initially
+        columns=[],  # Empty columns initially
+        data= [],  # Empty data initially
         style_cell={'textAlign': 'left'},
         style_header={
             'backgroundColor': 'white',
