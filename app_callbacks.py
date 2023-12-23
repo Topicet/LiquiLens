@@ -53,6 +53,15 @@ def register_callbacks(app: Dash):
             return bar_graph, json.dumps(unknown_transactions)
         else: return {}
 
+    @app.callback(
+        Output('category-spending-table', 'children'),
+        Input('update-data-button', 'n_clicks'),
+    )
+    def update_table(transactions):
+        
+        return None
+        
+
 
     @app.callback(
     Output('unknown_transactions_dropdown', 'options'),
