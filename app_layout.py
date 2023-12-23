@@ -17,20 +17,17 @@ layout = html.Div([
 
     
     dash_table.DataTable(
-        id='category-spending-table',
-        columns=[],  # Empty columns initially
-        data= [],  # Empty data initially
-        style_cell={'textAlign': 'left'},
-        style_header={
-            'backgroundColor': 'white',
-            'fontWeight': 'bold'
-        },
-        style_data_conditional=[
-            {
-                'if': {'row_index': 'odd'},
-                'backgroundColor': 'rgb(248, 248, 248)'
-            }
-        ]
+        id='header-table',
+        columns=[],
+        data=[],
+        # ... (your existing style settings)
+    ),
+
+    dash_table.DataTable(
+        id='categories-table',
+        columns=[],
+        data=[],
+        # ... (your existing style settings)
     ),
 
 

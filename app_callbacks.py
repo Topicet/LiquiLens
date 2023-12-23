@@ -55,16 +55,26 @@ def register_callbacks(app: Dash):
         else: return {}
 
     @app.callback(
-        [Output('category-spending-table', 'columns'),
-        Output('category-spending-table', 'data')],
+        [Output('header-table', 'columns'),
+        Output('header-table', 'data')],
         [Input('update-data-button', 'n_clicks')]
     )
-    def update_table(n_clicks):
+    def update_header_table(n_clicks):
         if n_clicks is None:
-            raise PreventUpdate  # If button is not clicked, do not update the table.
-        # Assume createDataTable() returns a DataFrame.
-        columns, data = createDataTable()
-        return columns, data
+            raise PreventUpdate
+        header_columns, header_data, _, _ = createDataTable()
+        return header_columns, header_data
+    
+    @app.callback(
+        [Output('categories-table', 'columns'),
+        Output('categories-table', 'data')],
+        [Input('update-data-button', 'n_clicks')]
+    )
+    def update_categories_table(n_clicks):
+        if n_clicks is None:
+            raise PreventUpdate
+        _, _, categories_columns, categories_data = createDataTable()
+        return categories_columns, categories_data
         
 
         
