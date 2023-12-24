@@ -16,7 +16,7 @@ from dash.exceptions import PreventUpdate
 from plotly import graph_objects as go
 
 # Local application/library specific imports
-from data_processing import process_data, createDataTable  # Replace with actual function names
+from data_processing import process_data, createDataTable
 from transactionDictionary import add_transaction
 
 def register_callbacks(app: Dash):

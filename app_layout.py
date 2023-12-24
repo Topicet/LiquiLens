@@ -15,17 +15,33 @@ layout = html.Div([
     html.Div(id='intermediate_storage', style={'display': 'none'}),
     html.Div(id='updated_intermediate_storage', style={'display': 'none'}),
 
-    
+
     dash_table.DataTable(
         id='header-table',
-        columns=[],
+        columns=(
+            {"name": "Positive Cash Flow", "id": "positiveCashFlow"},
+            {"name": "Negative Cash Flow", "id": "negativeCashFlow"},
+            {"name": "Net Cash Flow", "id": "netCashFlow"},
+            {"name": "Income to Expense Ratio", "id": "income_to_expense_ratio"}),
         data=[],
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            'fontWeight': 'bold'
+        },
+        style_cell={
+            'textAlign': 'center',
+        }
     ),
+
 
     dash_table.DataTable(
         id='categories-table',
         columns=[],
         data=[],
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            'fontWeight': 'bold'
+        }
     ),
 
 
