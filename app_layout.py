@@ -31,7 +31,7 @@ layout = html.Div([
 
     html.Div([
         dcc.Dropdown(
-            id='unknown_transactions_dropdown',  # Dropdown to select unknown transactions
+            id='unknown_Transactions_dropdown',  # Dropdown to select unknown transactions
             options=[],  # Initially empty, will be populated dynamically
             placeholder='Select an unknown transaction',
         ),

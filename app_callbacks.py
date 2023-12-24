@@ -27,11 +27,12 @@ def register_callbacks(app: Dash):
     )
     def update_bar_graph(n_clicks):
         if n_clicks is not None:
-            category_amount_dict, unknown_transactions = process_data()
+
+            known_Transactions, unknown_Transactions = process_data()
 
             # Extract categories and corresponding amounts from the dictionary
-            categories = list(category_amount_dict.keys())
-            amounts = list(category_amount_dict.values())
+            categories = list(known_Transactions.keys())
+            amounts = list(known_Transactions.values())
 
             # Create a bar graph
             bar_graph = go.Figure(
@@ -56,8 +57,8 @@ def register_callbacks(app: Dash):
                     dragmode=False,
                 )
             )
-
-            return bar_graph, json.dumps(unknown_transactions)
+            return bar_graph, json.dumps(unknown_Transactions)
+        
         else: return {}
 
     @app.callback(
@@ -83,11 +84,11 @@ def register_callbacks(app: Dash):
         return categories_columns, categories_data
 
     @app.callback(
-    Output('unknown_transactions_dropdown', 'options'),
+    Output('unknown_Transactions_dropdown', 'options'),
     Input('intermediate_storage', 'children'),
     Input('updated_intermediate_storage', 'children'),
 )
-    def update_unknown_transactions_dropdown(json_data, new_json_data):
+    def update_unknown_Transactions_dropdown(json_data, new_json_data):
 
         ctx = dash.callback_context
 
@@ -112,7 +113,7 @@ def register_callbacks(app: Dash):
         Input('assign_category_button', 'n_clicks'),
         Input('intermediate_storage', 'children'),
         State('category_dropdown', 'value'),
-        State('unknown_transactions_dropdown', 'value'),
+        State('unknown_Transactions_dropdown', 'value'),
     )
     def assign_category(n_clicks, json_data, selected_category, selected_unknown_transaction):
         if n_clicks and selected_category and selected_unknown_transaction:
