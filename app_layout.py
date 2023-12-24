@@ -6,7 +6,7 @@ from dash import dash_table
 
 predefined_categories = sorted(list(set(transaction_dict.values())))
 
-layout = html.Div([
+layout = html.Div(style={'backgroundColor': '#F5F5F5'}, children=[
     html.Button('Update Data', id='update-data-button', n_clicks=0, style={'margin-bottom': '20px', 'background-color': 'royalblue', 'color': 'white'}),
     dcc.Graph(id='bar-graph'), 
     html.Div(id='output-div'),
@@ -41,6 +41,9 @@ layout = html.Div([
         style_header={
             'backgroundColor': 'rgb(230, 230, 230)',
             'fontWeight': 'bold'
+        },
+            style_cell={
+            'textAlign': 'center',
         }
     ),
 

@@ -62,15 +62,14 @@ def register_callbacks(app: Dash):
         else: return {}
 
     @app.callback(
-        [Output('header-table', 'columns'),
-        Output('header-table', 'data')],
-        [Input('update-data-button', 'n_clicks')]
+        Output('header-table', 'data'),
+        Input('update-data-button', 'n_clicks')
     )
     def update_header_table(n_clicks):
         if n_clicks is None:
             raise PreventUpdate
-        header_columns, header_data, _, _ = createDataTable()
-        return header_columns, header_data
+        _, header_data, _, _ = createDataTable()
+        return header_data
     
     @app.callback(
         [Output('categories-table', 'columns'),

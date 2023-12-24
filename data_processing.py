@@ -84,8 +84,10 @@ def createDataTable():
 
     categories_sum = known_transactions.groupby('Category')['Amount'].sum().reset_index()
     categories_sum['Percentage'] = (categories_sum['Amount'] / positive_cash_flow * 100).round(2)
+    categories_sum = categories_sum.sort_values(by='Amount', ascending=False)
 
     categories_columns = [{"name": col, "id": col} for col in categories_sum.columns]
+
     categories_data = categories_sum.to_dict('records')
 
     return header_columns, header_data, categories_columns, categories_data
