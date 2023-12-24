@@ -2,16 +2,16 @@
 from dash import dcc, html
 from transactionDictionary import transaction_dict
 from dash import dash_table
-import pandas as pd
 
 
 predefined_categories = sorted(list(set(transaction_dict.values())))
 
 layout = html.Div([
     html.Button('Update Data', id='update-data-button', n_clicks=0, style={'margin-bottom': '20px', 'background-color': 'royalblue', 'color': 'white'}),
-    dcc.Graph(id='bar-graph'),  # This is where the graph will be displayed
+    dcc.Graph(id='bar-graph'), 
     html.Div(id='output-div'),
 
+    #Used for holding the hidden data that will be shown in the unknown transactions dropdown.
     html.Div(id='intermediate_storage', style={'display': 'none'}),
     html.Div(id='updated_intermediate_storage', style={'display': 'none'}),
 
@@ -20,14 +20,12 @@ layout = html.Div([
         id='header-table',
         columns=[],
         data=[],
-        # ... (your existing style settings)
     ),
 
     dash_table.DataTable(
         id='categories-table',
         columns=[],
         data=[],
-        # ... (your existing style settings)
     ),
 
 

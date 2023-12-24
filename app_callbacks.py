@@ -1,17 +1,23 @@
-#Houses the logic for the interactive components of your Dash app. For example, if you have a dropdown to select a date range, the callback to update your graphs would go here.
+"""
+This module contains the callback functions for the Dash application. 
+These functions define the app's interactivity by updating the app's 
+components in response to user inputs. The functions are registered 
+to the app in the `register_callbacks` function.
+"""
 
-from dash.dependencies import Input, Output, State
+# Standard library imports
 import json
-from plotly import graph_objects as go
-from data_processing import *
-from dash import Dash
-import dash
-from transactionDictionary import add_transaction
-from dash.exceptions import PreventUpdate
-from transactionDictionary import transaction_dict
-import pandas as pd
 
-predefined_categories = sorted(list(set(transaction_dict.values())))
+# Related third party imports
+import dash
+from dash import Dash
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+from plotly import graph_objects as go
+
+# Local application/library specific imports
+from data_processing import process_data, createDataTable  # Replace with actual function names
+from transactionDictionary import add_transaction
 
 def register_callbacks(app: Dash):
     @app.callback(
@@ -35,20 +41,20 @@ def register_callbacks(app: Dash):
                     text=amounts,
                     marker=dict(color='royalblue'),  
                     )],
-                    layout=go.Layout(
-                        title="Expenditure Amounts by Category",
-                        xaxis=dict(
-                            title="Categories",
-                            title_font=dict(size=24, family='Courier New, monospace')
-                        ),
-                        yaxis=dict(
-                            title="Amount",
-                            title_font=dict(size=24, family='Courier New, monospace'),
-                            range=[-500, 500]
-                        ),
-                        autosize=False,
-                        dragmode=False,
-                    )
+                layout=go.Layout(
+                    title="Expenditure Amounts by Category",
+                    xaxis=dict(
+                        title="Categories",
+                        title_font=dict(size=24, family='Courier New, monospace')
+                    ),
+                    yaxis=dict(
+                        title="Amount",
+                        title_font=dict(size=24, family='Courier New, monospace'),
+                        range=[-500, 500]
+                    ),
+                    autosize=False,
+                    dragmode=False,
+                )
             )
 
             return bar_graph, json.dumps(unknown_transactions)
@@ -75,10 +81,6 @@ def register_callbacks(app: Dash):
             raise PreventUpdate
         _, _, categories_columns, categories_data = createDataTable()
         return categories_columns, categories_data
-        
-
-        
-
 
     @app.callback(
     Output('unknown_transactions_dropdown', 'options'),
