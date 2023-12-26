@@ -2,6 +2,7 @@
 from dash import dcc, html
 from transactionDictionary import transaction_dict
 from dash import dash_table
+from dash.dash_table import FormatTemplate
 
 layout = html.Div([
     html.Button('Update Data', id='update-data-button', n_clicks=0),
@@ -16,10 +17,10 @@ layout = html.Div([
     dash_table.DataTable(
         id='header-table',
         columns=(
-            {"name": "Positive Cash Flow", "id": "positiveCashFlow"},
-            {"name": "Negative Cash Flow", "id": "negativeCashFlow"},
-            {"name": "Net Cash Flow", "id": "netCashFlow"},
-            {"name": "Income to Expense Ratio", "id": "income_to_expense_ratio"}),
+            {"name": "Positive Cash Flow", "id": "positiveCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)},
+            {"name": "Negative Cash Flow", "id": "negativeCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)},
+            {"name": "Net Cash Flow", "id": "netCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)},
+            {"name": "Income to Expense Ratio", "id": "income_to_expense_ratio", 'type': 'numeric', 'format': FormatTemplate.percentage(2)}),
         data=[],
         style_header={
             'backgroundColor': 'rgb(230, 230, 230)',
@@ -27,6 +28,9 @@ layout = html.Div([
         },
         style_cell={
             'textAlign': 'center',
+            'height': 'auto',
+            'whiteSpace': 'normal',
+            'fontSize': '1.2em',
         }
     ),
 
@@ -39,8 +43,11 @@ layout = html.Div([
             'backgroundColor': 'rgb(230, 230, 230)',
             'fontWeight': 'bold'
         },
-            style_cell={
+        style_cell={
             'textAlign': 'center',
+            'height': 'auto',
+            'whiteSpace': 'normal',
+            'fontSize': '1.2em',
         }
     ),
 

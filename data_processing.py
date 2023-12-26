@@ -23,7 +23,7 @@ def calculate_financial_metrics(bank_dataframe):
     net_cash_flow = positive_cash_flow + negative_cash_flow
     income_to_expense_ratio = abs(negative_cash_flow / positive_cash_flow)
 
-    return positive_cash_flow, negative_cash_flow, net_cash_flow, income_to_expense_ratio
+    return round(positive_cash_flow, 2), round(negative_cash_flow, 2), round(net_cash_flow, 2), round(income_to_expense_ratio, 2)
 
 def process_data():
     bank_dataframe = read_bank_data("bk_download(27).csv")

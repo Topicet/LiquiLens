@@ -51,7 +51,7 @@ def register_callbacks(app: Dash):
                     yaxis=dict(
                         title="Amount",
                         title_font=dict(size=24, family='Courier New, monospace'),
-                        range=[-500, 500]
+                        range=[-1000, 1000]
                     ),
                     autosize=False,
                     dragmode=False,
