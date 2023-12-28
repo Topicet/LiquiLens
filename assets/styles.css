@@ -7,8 +7,13 @@ html, body {
 /* Global styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #d86767;
-    color: #000000;
+    background-color: #FFF3DA;
+}
+
+#myUniqueDivID {
+    background-color: lightblue;
+    border: 1px solid gray;
+    padding: 10px;
 }
 
 h1 {

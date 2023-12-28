@@ -1,97 +1,135 @@
 #Handles all the data reading and manipulation tasks. Uses Pandas to categorize transactions and calculate financial metrics.
 import os
-import pandas as pd
+import pandas as panda
 import re
 from datetime import datetime
-from transactionDictionary import transaction_dict
+from transactionDictionary import transactionDict
 
 
-def read_bank_data(file_name):
-    file_path = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", file_name)
-    return pd.read_csv(file_path)
+def readBankData(fileName):
+    filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", fileName)
+    return panda.read_csv(filePath)
 
-def categorize_transactions(bank_dataframe):
-    bank_dataframe = bank_dataframe[~bank_dataframe['Description'].apply(regexSearch_Simmons)] #Exclude simmons statements from transactions
-    bank_dataframe = bank_dataframe[bank_dataframe['Status'] != "Pending"]
-    bank_dataframe['Category'] = bank_dataframe['Description'].apply(lambda x: transaction_dict.get(x, "Unknown"))
-    return bank_dataframe
+def categorizeTransactions(bankDataframe):
+    bankDataframe = bankDataframe[~bankDataframe['Description'].apply(regexSearch_Simmons)] #Exclude simmons statements from transactions
+    bankDataframe = bankDataframe[bankDataframe['Status'] != "Pending"]
+    bankDataframe['Category'] = bankDataframe['Description'].apply(lambda x: transactionDict.get(x, "Unknown"))
+    return bankDataframe
 
-def calculate_financial_metrics(bank_dataframe):
-    positive_cash_flow = bank_dataframe[bank_dataframe['Amount'] > 0]['Amount'].sum()
-    negative_cash_flow = bank_dataframe[bank_dataframe['Amount'] < 0]['Amount'].sum()
+def calculatePositiveCashFlow(bankDataframe):
+    positiveCashFlow = bankDataframe[bankDataframe['Amount'] > 0]['Amount'].sum()
+    return round(positiveCashFlow, 2)
 
-    net_cash_flow = positive_cash_flow + negative_cash_flow
-    income_to_expense_ratio = abs(negative_cash_flow / positive_cash_flow)
+def calculateNegativeCashFlow(bankDataframe):
+    negativeCashFlow = bankDataframe[bankDataframe['Amount'] < 0]['Amount'].sum()
+    return round(negativeCashFlow, 2)
 
-    return round(positive_cash_flow, 2), round(negative_cash_flow, 2), round(net_cash_flow, 2), round(income_to_expense_ratio, 2)
+def calculateNetCashFlow(bankDataframe):
+    positiveCashFlow = calculatePositiveCashFlow(bankDataframe)
+    negativeCashFlow = calculateNegativeCashFlow(bankDataframe)
+    netCashFlow = positiveCashFlow + negativeCashFlow
+    return round(netCashFlow, 2)
 
-def process_data():
-    bank_dataframe = read_bank_data("bk_download(27).csv")
-    categorized_df = categorize_transactions(bank_dataframe)
+def calculateIncomeToExpenseRatio(bankDataframe):
+    positiveCashFlow = calculatePositiveCashFlow(bankDataframe)
+    negativeCashFlow = calculateNegativeCashFlow(bankDataframe)
+    incomeToExpenseRatio = abs(negativeCashFlow / positiveCashFlow)
+    return round(incomeToExpenseRatio, 2)
 
-    known_transactions_dataframe = categorized_df[categorized_df['Category'] != "Unknown"]
-    unknown_transactions_dataframe = categorized_df[categorized_df['Category'] == "Unknown"]
+def processData():
+    bankDataframe = readBankData("bk_download(27).csv")
+    categorizedTransactions = categorizeTransactions(bankDataframe)
 
-    known_transactions_dictionary = {}
-    unknown_transactions_dictionary = {}
+    knownTransactions_dataframe = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
+    unknownTransactions_dataframe = categorizedTransactions[categorizedTransactions['Category'] == "Unknown"]
 
-    for index, row in known_transactions_dataframe.iterrows():
+    knownTransactionsDictionaryionary = {}
+    unknownTransactionsDictionary = {}
+
+    for index, row in knownTransactions_dataframe.iterrows():
         description = row['Description']
         amount = row['Amount']
-        category = transaction_dict.get(description)
+        category = transactionDict.get(description)
 
-        if category in known_transactions_dictionary:
-            known_transactions_dictionary[category] += amount
+        if category in knownTransactionsDictionaryionary:
+            knownTransactionsDictionaryionary[category] += amount
         else:
-            known_transactions_dictionary[category] = amount
+            knownTransactionsDictionaryionary[category] = amount
 
-    for index, row in unknown_transactions_dataframe.iterrows():
+    for index, row in unknownTransactions_dataframe.iterrows():
         description = row['Description']
         amount = row['Amount']
 
-        if description in unknown_transactions_dictionary:
-            unknown_transactions_dictionary[description] += amount
+        if description in unknownTransactionsDictionary:
+            unknownTransactionsDictionary[description] += amount
         else:
-            unknown_transactions_dictionary[description] = amount       
+            unknownTransactionsDictionary[description] = amount       
 
     # Sort the known dictionary by value in descending order
-    known_transactions_dictionary = {k: v for k, v in sorted(known_transactions_dictionary.items(), key=lambda item: item[1], reverse=True)}
+    knownTransactionsDictionaryionary = {k: v for k, v in sorted(knownTransactionsDictionaryionary.items(), key=lambda item: item[1], reverse=True)}
 
-    for category, amount in known_transactions_dictionary.items():
+    for category, amount in knownTransactionsDictionaryionary.items():
         # Round to 2 decimal places
-        known_transactions_dictionary[category] = round(amount, 2)
+        knownTransactionsDictionaryionary[category] = round(amount, 2)
     
-    return known_transactions_dictionary, unknown_transactions_dictionary
+    return knownTransactionsDictionaryionary, unknownTransactionsDictionary
 
-def createDataTable():
-    bank_dataframe = read_bank_data("bk_download(27).csv")
-    categorized_df = categorize_transactions(bank_dataframe)
+def createCategoryDataTable():
+    bankDataframe = readBankData("bk_download(27).csv")
+    categorizedTransactions = categorizeTransactions(bankDataframe)
 
-    known_transactions = categorized_df[categorized_df['Category'] != "Unknown"]
+    knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
 
-    positive_cash_flow, negative_cash_flow, net_cash_flow, income_to_expense_ratio = calculate_financial_metrics(known_transactions)
+    positiveCashFlow = calculatePositiveCashFlow(knownTransactions)
+    categoriesSum = knownTransactions.groupby('Category')['Amount'].sum().reset_index()
+    categoriesSum['Percentage'] = (categoriesSum['Amount'] / positiveCashFlow * 100).round(2)
+    categoriesSum = categoriesSum.sort_values(by='Amount', ascending=False)
 
-    headerDictionary = {
-        'positiveCashFlow': positive_cash_flow,
-        'negativeCashFlow': negative_cash_flow,
-        'netCashFlow': net_cash_flow,
-        'income_to_expense_ratio': income_to_expense_ratio
-    }
+    categoriesColumns = [{"name": col, "id": col} for col in categoriesSum.columns]
 
-    header_df = pd.DataFrame([headerDictionary])
-    header_data = header_df.to_dict('records')
-    header_columns = [{"name": col, "id": col} for col in header_df.columns]
+    categoriesData = categoriesSum.to_dict('records')
 
-    categories_sum = known_transactions.groupby('Category')['Amount'].sum().reset_index()
-    categories_sum['Percentage'] = (categories_sum['Amount'] / positive_cash_flow * 100).round(2)
-    categories_sum = categories_sum.sort_values(by='Amount', ascending=False)
+    return categoriesColumns, categoriesData
 
-    categories_columns = [{"name": col, "id": col} for col in categories_sum.columns]
+def createPositiveCashFlowDictionary():
 
-    categories_data = categories_sum.to_dict('records')
+    bankDataframe = readBankData("bk_download(27).csv")
+    categorizedTransactions = categorizeTransactions(bankDataframe)
 
-    return header_columns, header_data, categories_columns, categories_data
+    knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
+    positiveCashFlow = calculatePositiveCashFlow(knownTransactions)
 
+    return {'positiveCashFlow': positiveCashFlow}
+
+def createNegativeCashFlowDictionary():
+
+    bankDataframe = readBankData("bk_download(27).csv")
+    categorizedTransactions = categorizeTransactions(bankDataframe)
+
+    knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
+    negativeCashFlow = calculateNegativeCashFlow(knownTransactions)
+
+    return {'negativeCashFlow': negativeCashFlow}
+
+def createNetCashFlowDictionary():
+
+    bankDataframe = readBankData("bk_download(27).csv")
+    categorizedTransactions = categorizeTransactions(bankDataframe)
+
+    knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
+    netCashFlow = calculateNetCashFlow(knownTransactions)
+
+    return {'netCashFlow': netCashFlow}
+
+def createIncomeToExpenseRatioDictionary():
+
+    bankDataframe = readBankData("bk_download(27).csv")
+    categorizedTransactions = categorizeTransactions(bankDataframe)
+
+    knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
+    incomeToExpenseRatio = calculateIncomeToExpenseRatio(knownTransactions)
+
+    return {'incomeToExpenseRatio': incomeToExpenseRatio}
 
 def regexSearch_Simmons(description):
     return bool(re.search(r'(?i)simmons?', description))

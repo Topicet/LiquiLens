@@ -1,18 +1,21 @@
 # Contains the layout of your Dash app. All your HTML and Dash components would go here.
 from dash import dcc, html
-from transactionDictionary import transaction_dict
+from transactionDictionary import transactionDict
 from dash import dash_table
 from dash.dash_table import FormatTemplate
 
 layout = html.Div([
 
+    # Div for the header
+    html.Div([
+
     dash_table.DataTable(
-        id='header-table',
-        columns=(
-            {"name": "Positive Cash Flow", "id": "positiveCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)},
-            {"name": "Negative Cash Flow", "id": "negativeCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)},
-            {"name": "Net Cash Flow", "id": "netCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)},
-            {"name": "Income to Expense Ratio", "id": "income_to_expense_ratio", 'type': 'numeric', 'format': FormatTemplate.percentage(2)}),
+        id='positiveCashFlowTable',        
+        columns=[
+            {"name": "Positive Cash Flow",
+            "id": "positiveCashFlow",
+            'type': 'numeric',
+            'format': FormatTemplate.money(2)}],           
         data=[],
         style_header={
             'backgroundColor': 'rgb(230, 230, 230)',
@@ -26,6 +29,60 @@ layout = html.Div([
             'padding': '5px'
         },
     ),
+
+    dash_table.DataTable(
+        id='negativeCashFlowTable',
+        columns=[{"name": "Negative Cash Flow", "id": "negativeCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)}],
+        data=[],
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            'fontWeight': 'bold'
+        },
+        style_cell={
+            'textAlign': 'center',
+            'height': 'auto',
+            'whiteSpace': 'normal',
+            'fontSize': '1.2em',
+            'padding': '5px'
+        },
+    ),
+
+    dash_table.DataTable(
+        id='netCashFlowTable',
+        columns=[
+            {"name": "Net Cash Flow", "id": "netCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)}],
+        data=[],
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            'fontWeight': 'bold'
+        },
+        style_cell={
+            'textAlign': 'center',
+            'height': 'auto',
+            'whiteSpace': 'normal',
+            'fontSize': '1.2em',
+            'padding': '5px'
+        },
+    ),
+
+    dash_table.DataTable(
+        id='income_to_expense_ratioTable',
+        columns=[
+            {"name": "Income to Expense Ratio", "id": "incomeToExpenseRatio", 'type': 'numeric', 'format': FormatTemplate.percentage(2)}],
+        data=[],
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            'fontWeight': 'bold'
+        },
+        style_cell={
+            'textAlign': 'center',
+            'height': 'auto',
+            'whiteSpace': 'normal',
+            'fontSize': '1.2em',
+            'padding': '5px'
+        },
+    ),
+    ],  id='myUniqueDivID', style={'display': 'flex', 'gap': '10px'}),
 
 
     html.Button('Update Data', id='update-data-button', n_clicks=0),
@@ -65,7 +122,7 @@ layout = html.Div([
         ),
         dcc.Dropdown(
             id='category_dropdown',  # Dropdown to select categories
-            options=[{'label': category, 'value': category} for category in sorted(list(set(transaction_dict.values())))],
+            options=[{'label': category, 'value': category} for category in sorted(list(set(transactionDict.values())))],
             placeholder='Select a category',
         ),
         html.Button('Assign Category', id='assign_category_button', n_clicks=0),

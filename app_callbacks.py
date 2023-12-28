@@ -16,7 +16,7 @@ from dash.exceptions import PreventUpdate
 from plotly import graph_objects as go
 
 # Local application/library specific imports
-from data_processing import process_data, createDataTable
+from data_processing import *
 from transactionDictionary import add_transaction
 
 def register_callbacks(app: Dash):
@@ -28,7 +28,7 @@ def register_callbacks(app: Dash):
     def update_bar_graph(n_clicks):
         if n_clicks is not None:
 
-            known_Transactions, unknown_Transactions = process_data()
+            known_Transactions, unknown_Transactions = processData()
 
             # Extract categories and corresponding amounts from the dictionary
             categories = list(known_Transactions.keys())
@@ -61,25 +61,66 @@ def register_callbacks(app: Dash):
         
         else: return {}
 
+
     @app.callback(
-        Output('header-table', 'data'),
+        Output('positiveCashFlowTable', 'data'),
         Input('update-data-button', 'n_clicks')
     )
-    def update_header_table(n_clicks):
+    def updatePositiveCashFlowTable(n_clicks):
+
         if n_clicks is None:
             raise PreventUpdate
-        _, header_data, _, _ = createDataTable()
-        return header_data
+        data = createPositiveCashFlowDictionary()
+
+        return [data]
+
+    @app.callback(
+        Output('negativeCashFlowTable', 'data'),
+        Input('update-data-button', 'n_clicks')
+    )
+    def updateNegativeCashFlowTable(n_clicks):
+
+        if n_clicks is None:
+            raise PreventUpdate
+        data = createNegativeCashFlowDictionary()
+
+        return [data]
+
+    @app.callback(
+        Output('netCashFlowTable', 'data'),
+        Input('update-data-button', 'n_clicks')
+    )
+    def updateNetCashFlowTable(n_clicks):
+
+        if n_clicks is None:
+            raise PreventUpdate
+        data = createNetCashFlowDictionary()
+
+        return [data]
+
+    @app.callback(
+        Output('income_to_expense_ratioTable', 'data'),
+        Input('update-data-button', 'n_clicks')
+    )
+    def updateIncomeToExpenseRatioTable(n_clicks):
+
+        if n_clicks is None:
+            raise PreventUpdate
+        data = createIncomeToExpenseRatioDictionary()
+
+        return [data]
     
     @app.callback(
         [Output('categories-table', 'columns'),
         Output('categories-table', 'data')],
         [Input('update-data-button', 'n_clicks')]
     )
-    def update_categories_table(n_clicks):
+    def updateCategoriesTable(n_clicks):
+
         if n_clicks is None:
             raise PreventUpdate
-        _, _, categories_columns, categories_data = createDataTable()
+        categories_columns, categories_data = createCategoryDataTable()
+        
         return categories_columns, categories_data
 
     @app.callback(
