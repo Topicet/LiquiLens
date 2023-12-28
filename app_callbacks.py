@@ -46,15 +46,15 @@ def register_callbacks(app: Dash):
                     title="Expenditure Amounts by Category",
                     xaxis=dict(
                         title="Categories",
-                        title_font=dict(size=24, family='Courier New, monospace')
+                        title_font=dict(size=24, family='Tommy')
                     ),
                     yaxis=dict(
                         title="Amount",
-                        title_font=dict(size=24, family='Courier New, monospace'),
+                        title_font=dict(size=24, family='Tommy'),
                         range=[-1000, 1000]
                     ),
                     autosize=False,
-                    dragmode=False,
+                    dragmode=False,                    
                 )
             )
             return bar_graph, json.dumps(unknown_Transactions)

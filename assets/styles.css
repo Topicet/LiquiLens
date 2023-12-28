@@ -25,6 +25,16 @@ body {
     gap: 10px;
 }
 
+#barGraphDiv {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+    align-items: center;
+    gap: 10px;
+}
+
 #positiveCashFlowTable, #negativeCashFlowTable, #netCashFlowTable, #incomeToExpenseRatioTable {
     opacity: 1;
     transition: opacity 0.3s ease;
@@ -34,23 +44,27 @@ body {
     opacity: 0.8;
 }
 
-h1 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
 
 #update-data-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 4px;
+    background-color: #116466;
+    color: #FFCB9A;
+    border: none;
+    border-radius: 20px;
     text-decoration: none;
+    font-weight: bold;
+    font-family: 'Tommy';
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
 }
 
-#update-data-button:hover {
-    background-color: #0056b3;
+#update-data-button:hover, #update-data-button:focus {
+    background-color: #D9B08C;
+    color: #2C3531;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
+    outline: none;
 }
 
 p {

@@ -124,8 +124,12 @@ layout = html.Div([
     ],  id='headerDiv'),
 
 
-    html.Button('Update Data', id='update-data-button', n_clicks=0),
-    dcc.Graph(id='bar-graph'), 
+    html.Div([
+        html.Button('Update Data', id='update-data-button', n_clicks=0),
+        dcc.Graph(id='bar-graph'), 
+    ],  id='barGraphDiv'),
+
+
     html.Div(id='output-div'),
 
     #Used for holding the hidden data that will be shown in the unknown transactions dropdown.
