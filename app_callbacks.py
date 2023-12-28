@@ -13,7 +13,7 @@ import dash
 from dash import Dash
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
-from plotly import graph_objects as go
+import plotly.express as px
 
 # Local application/library specific imports
 from data_processing import *
@@ -34,29 +34,43 @@ def register_callbacks(app: Dash):
             categories = list(known_Transactions.keys())
             amounts = list(known_Transactions.values())
 
-            # Create a bar graph
-            bar_graph = go.Figure(
-                data=[go.Bar(
-                    x=categories, 
-                    y=amounts,                    
-                    text=amounts,
-                    marker=dict(color='royalblue'),  
-                    )],
-                layout=go.Layout(
-                    title="Expenditure Amounts by Category",
-                    xaxis=dict(
-                        title="Categories",
-                        title_font=dict(size=24, family='Tommy')
-                    ),
-                    yaxis=dict(
-                        title="Amount",
-                        title_font=dict(size=24, family='Tommy'),
-                        range=[-1000, 1000]
-                    ),
-                    autosize=False,
-                    dragmode=False,                    
-                )
+            # Create a bar graph using plotly express
+            bar_graph = px.bar(
+                x=categories, 
+                y=amounts,
+                text=amounts,
+                labels={'x': 'Categories', 'y': 'Amount'},
             )
+            bar_graph.update_layout(
+                xaxis=dict(
+                    title="Categories",
+                    title_font=dict(size=24, family='Tommy', color='#FFCB9A'),
+                    tickfont=dict(color='#FFCB9A')  # Set the color for x-axis label fonts
+                ),
+                yaxis=dict(
+                    title="Amount",
+                    title_font=dict(size=24, family='Tommy', color='#FFCB9A'),
+                    tickfont=dict(color='#FFCB9A'),  # Set the color for y-axis label fonts
+                    range=[-1000, 1000]
+                ),
+                title={
+                    'text': "Expenditure Amounts by Category",
+                    'y':0.95,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top',
+                    'font': dict(
+                        family="Tommy",  # Specify the font family for the title
+                        size=24,  # Specify the font size for the title
+                        color="#FFCB9A"
+                    )
+                },
+                autosize=False,
+                dragmode=False,
+                plot_bgcolor='#F9F5F6',  # This sets the background color outside the bar graph
+                paper_bgcolor='#F9F5F6',  # This sets the background color for the entire layout of the graph
+            )
+
             return bar_graph, json.dumps(unknown_Transactions)
         
         else: return {}
