@@ -1,6 +1,5 @@
 /* Reset default styles */
 html, body {
-    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -9,20 +8,7 @@ html, body {
 body {
     font-family: Arial, sans-serif;
     background-color: #d86767;
-    color: #333;
-}
-
-/* Add a class for the main container of your app */
-.main-container {
-    min-height: 100vh; /* This will make sure your container also takes up full height */
-    display: flex;
-    flex-direction: column; /* Stack children vertically */    
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    color: #000000;
 }
 
 h1 {
@@ -43,7 +29,6 @@ h1 {
 #update-data-button:hover {
     background-color: #0056b3;
 }
-
 
 p {
     font-size: 16px;

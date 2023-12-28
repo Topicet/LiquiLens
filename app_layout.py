@@ -23,8 +23,8 @@ layout = html.Div([
             'height': 'auto',
             'whiteSpace': 'normal',
             'fontSize': '1.2em',
+            'padding': '5px'
         },
-        style_table={'marginTop': '20px'}  
     ),
 
 
