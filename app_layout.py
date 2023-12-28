@@ -18,15 +18,24 @@ layout = html.Div([
             'format': FormatTemplate.money(2)}],           
         data=[],
         style_header={
-            'backgroundColor': 'rgb(230, 230, 230)',
-            'fontWeight': 'bold'
+            'backgroundColor': '#2C3531',
+            'fontWeight': 'bold',
+            'color': '#d1e8e2',
         },
         style_cell={
             'textAlign': 'center',
-            'height': 'auto',
             'whiteSpace': 'normal',
             'fontSize': '1.2em',
-            'padding': '5px'
+            'padding-left': '10px',
+            'padding-right': '10px',
+            'font-family':'Tommy'
+        },
+        style_data={
+            'height': '30px',
+            'width': '280px',
+            'whiteSpace': 'normal',
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
         },
     ),
 
@@ -35,15 +44,25 @@ layout = html.Div([
         columns=[{"name": "Negative Cash Flow", "id": "negativeCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)}],
         data=[],
         style_header={
-            'backgroundColor': 'rgb(230, 230, 230)',
-            'fontWeight': 'bold'
+            'backgroundColor': '#2C3531',
+            'fontWeight': 'bold',
+            'color': '#d1e8e2',
         },
         style_cell={
             'textAlign': 'center',
             'height': 'auto',
             'whiteSpace': 'normal',
             'fontSize': '1.2em',
-            'padding': '5px'
+            'padding-left': '10px',
+            'padding-right': '10px',
+            'font-family':'Tommy'
+        },
+        style_data={
+            'height': '30px',
+            'width': '280px',
+            'whiteSpace': 'normal',
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
         },
     ),
 
@@ -53,36 +72,56 @@ layout = html.Div([
             {"name": "Net Cash Flow", "id": "netCashFlow", 'type': 'numeric', 'format': FormatTemplate.money(2)}],
         data=[],
         style_header={
-            'backgroundColor': 'rgb(230, 230, 230)',
-            'fontWeight': 'bold'
+            'backgroundColor': '#2C3531',
+            'fontWeight': 'bold',
+            'color': '#d1e8e2',
         },
         style_cell={
             'textAlign': 'center',
             'height': 'auto',
             'whiteSpace': 'normal',
             'fontSize': '1.2em',
-            'padding': '5px'
+            'padding-left': '10px',
+            'padding-right': '10px',
+            'font-family':'Tommy'
+        },
+        style_data={
+            'height': '30px',
+            'width': '280px',
+            'whiteSpace': 'normal',
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
         },
     ),
 
     dash_table.DataTable(
-        id='income_to_expense_ratioTable',
+        id='incomeToExpenseRatioTable',
         columns=[
             {"name": "Income to Expense Ratio", "id": "incomeToExpenseRatio", 'type': 'numeric', 'format': FormatTemplate.percentage(2)}],
         data=[],
         style_header={
-            'backgroundColor': 'rgb(230, 230, 230)',
-            'fontWeight': 'bold'
+            'backgroundColor': '#2C3531',
+            'fontWeight': 'bold',
+            'color': '#d1e8e2',
         },
         style_cell={
             'textAlign': 'center',
             'height': 'auto',
             'whiteSpace': 'normal',
             'fontSize': '1.2em',
-            'padding': '5px'
+            'padding-left': '10px',
+            'padding-right': '10px',
+            'font-family':'Tommy'
+        },
+        style_data={
+            'height': '30px',
+            'width': '280px',
+            'whiteSpace': 'normal',
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
         },
     ),
-    ],  id='myUniqueDivID', style={'display': 'flex', 'gap': '10px'}),
+    ],  id='headerDiv'),
 
 
     html.Button('Update Data', id='update-data-button', n_clicks=0),

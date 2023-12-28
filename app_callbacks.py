@@ -99,7 +99,7 @@ def register_callbacks(app: Dash):
         return [data]
 
     @app.callback(
-        Output('income_to_expense_ratioTable', 'data'),
+        Output('incomeToExpenseRatioTable', 'data'),
         Input('update-data-button', 'n_clicks')
     )
     def updateIncomeToExpenseRatioTable(n_clicks):

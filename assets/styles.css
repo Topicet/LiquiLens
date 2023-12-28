@@ -1,19 +1,37 @@
-/* Reset default styles */
 html, body {
     margin: 0;
     padding: 0;
 }
 
-/* Global styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #FFF3DA;
+@font-face {
+    font-family: 'Tommy';
+    src: url('/assets/MADETOMMY.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
 }
 
-#myUniqueDivID {
-    background-color: lightblue;
-    border: 1px solid gray;
+/* Global styles */
+body {
+    background-color: #d1e8e2;
+}
+
+#headerDiv {
     padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+    align-items: center;
+    gap: 10px;
+}
+
+#positiveCashFlowTable, #negativeCashFlowTable, #netCashFlowTable, #incomeToExpenseRatioTable {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+#positiveCashFlowTable:hover, #negativeCashFlowTable:hover, #netCashFlowTable:hover, #incomeToExpenseRatioTable:hover {
+    opacity: 0.8;
 }
 
 h1 {
