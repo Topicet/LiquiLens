@@ -5,14 +5,6 @@ from dash import dash_table
 from dash.dash_table import FormatTemplate
 
 layout = html.Div([
-    html.Button('Update Data', id='update-data-button', n_clicks=0),
-    dcc.Graph(id='bar-graph'), 
-    html.Div(id='output-div'),
-
-    #Used for holding the hidden data that will be shown in the unknown transactions dropdown.
-    html.Div(id='intermediate_storage', style={'display': 'none'}),
-    html.Div(id='updated_intermediate_storage', style={'display': 'none'}),
-
 
     dash_table.DataTable(
         id='header-table',
@@ -31,8 +23,21 @@ layout = html.Div([
             'height': 'auto',
             'whiteSpace': 'normal',
             'fontSize': '1.2em',
-        }
+        },
+        style_table={'marginTop': '20px'}  
     ),
+
+
+    html.Button('Update Data', id='update-data-button', n_clicks=0),
+    dcc.Graph(id='bar-graph'), 
+    html.Div(id='output-div'),
+
+    #Used for holding the hidden data that will be shown in the unknown transactions dropdown.
+    html.Div(id='intermediate_storage', style={'display': 'none'}),
+    html.Div(id='updated_intermediate_storage', style={'display': 'none'}),
+
+
+
 
 
     dash_table.DataTable(
