@@ -25,6 +25,15 @@ body {
     gap: 10px;
 }
 
+#LeftSideDiv {
+    flex: 0 0 15%;  /* Don't grow or shrink, take up 20% of the space */
+    max-width: 15%;  /* Don't let it take up more than 20% of the space */
+}
+
+#RightSideDiv {
+    flex: 1;  /* Grow to take up the remaining space */
+}
+
 #barGraphDiv {
     padding: 10px;
     display: flex;
