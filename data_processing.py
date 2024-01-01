@@ -7,7 +7,8 @@ from transactionDictionary import transactionDict
 
 
 def readBankData(fileName):
-    filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", fileName)
+    #filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", fileName)
+    filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\December", fileName)
     return panda.read_csv(filePath)
 
 def categorizeTransactions(bankDataframe):

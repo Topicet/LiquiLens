@@ -20,7 +20,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Tommy', sans-serif;
     align-items: center;
     gap: 10px;
 }
@@ -30,7 +30,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Tommy', sans-serif;
     align-items: center;
     gap: 10px;
 }

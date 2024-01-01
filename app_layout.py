@@ -127,7 +127,42 @@ layout = html.Div([
     html.Div([
         html.Button('Update Data', id='update-data-button', n_clicks=0),
         dcc.Graph(id='bar-graph'), 
-    ],  id='barGraphDiv'),
+        dash_table.DataTable(
+            id='categories-table',
+            columns=[
+                {"name": "Expense Name", "id": "expenseNameHeader"},
+                {"name": "Amount", "id": "amountHeader"},
+            ],
+            data=[
+                {"expenseNameHeader": "Medicine", "amountHeader": "30"},
+                {"expenseNameHeader": "Gym", "amountHeader": "50"},
+                {"expenseNameHeader": "Haircut", "amountHeader": "30"},
+                {"expenseNameHeader": "Music", "amountHeader": "6"},
+                {"expenseNameHeader": "Gas", "amountHeader": "100"},
+                {"expenseNameHeader": "GPT", "amountHeader": "20"},
+                {"expenseNameHeader": "Total", "amountHeader": "236"},
+            ],
+            style_header={
+                'backgroundColor': '#2C3531',
+                'fontWeight': 'bold',
+                'color': '#d1e8e2',
+            },
+            style_cell={
+                'textAlign': 'center',
+                'whiteSpace': 'normal',
+                'fontSize': '1.2em',
+                'padding-left': '10px',
+                'padding-right': '10px',
+                'font-family':'Tommy'
+            },
+            style_data={
+                'height': '30px',
+                'width': '280px',
+                'whiteSpace': 'normal',
+                'overflow': 'hidden',
+                'textOverflow': 'ellipsis',
+        },
+    )],  id='barGraphDiv'),
 
 
     html.Div(id='output-div'),
@@ -145,15 +180,25 @@ layout = html.Div([
         columns=[],
         data=[],
         style_header={
-            'backgroundColor': 'rgb(230, 230, 230)',
-            'fontWeight': 'bold'
+            'backgroundColor': '#2C3531',
+            'fontWeight': 'bold',
+            'color': '#d1e8e2',
         },
         style_cell={
             'textAlign': 'center',
-            'height': 'auto',
             'whiteSpace': 'normal',
             'fontSize': '1.2em',
-        }
+            'padding-left': '10px',
+            'padding-right': '10px',
+            'font-family':'Tommy'
+        },
+        style_data={
+            'height': '30px',
+            'width': '280px',
+            'whiteSpace': 'normal',
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
+        },
     ),
 
 
