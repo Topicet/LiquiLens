@@ -8,7 +8,8 @@ from transactionDictionary import transactionDict
 
 def readBankData(fileName):
     #filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", fileName)
-    filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\December", fileName)
+    #filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\December", fileName)
+    filePath = os.path.join(f"C:\\Users\\joebe\\Downloads", fileName)
     return panda.read_csv(filePath)
 
 def categorizeTransactions(bankDataframe):
@@ -38,7 +39,7 @@ def calculateIncomeToExpenseRatio(bankDataframe):
     return round(incomeToExpenseRatio, 2)
 
 def processData():
-    bankDataframe = readBankData("bk_download(27).csv")
+    bankDataframe = readBankData("bk_download.csv")
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions_dataframe = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -76,7 +77,7 @@ def processData():
     return knownTransactionsDictionaryionary, unknownTransactionsDictionary
 
 def createCategoryDataTable():
-    bankDataframe = readBankData("bk_download(27).csv")
+    bankDataframe = readBankData("bk_download.csv")
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -94,7 +95,7 @@ def createCategoryDataTable():
 
 def createPositiveCashFlowDictionary():
 
-    bankDataframe = readBankData("bk_download(27).csv")
+    bankDataframe = readBankData("bk_download.csv")
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -104,7 +105,7 @@ def createPositiveCashFlowDictionary():
 
 def createNegativeCashFlowDictionary():
 
-    bankDataframe = readBankData("bk_download(27).csv")
+    bankDataframe = readBankData("bk_download.csv")
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -114,7 +115,7 @@ def createNegativeCashFlowDictionary():
 
 def createNetCashFlowDictionary():
 
-    bankDataframe = readBankData("bk_download(27).csv")
+    bankDataframe = readBankData("bk_download.csv")
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -124,7 +125,7 @@ def createNetCashFlowDictionary():
 
 def createIncomeToExpenseRatioDictionary():
 
-    bankDataframe = readBankData("bk_download(27).csv")
+    bankDataframe = readBankData("bk_download.csv")
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
