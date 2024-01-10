@@ -1,1 +1,22 @@
-#Any helper functions that don't naturally fit into the above categories could go here. For example, you could have a function that formats numbers into currency.
+import re
+
+#Used for removing simmons payments from USAA data
+def regexSearch_Simmons(description):
+    return bool(re.search(r'(?i)simmons?', description))
+
+#Used for classifying simmons transaction names.
+def simplify_transaction_name(description):
+    mapping = {
+        'steam': 'Steam',
+        '7-eleven': '7-ELEVEN',
+        'vapor': 'Vape',
+        # Add more mappings as necessary
+    }
+    
+    description = description.lower()
+    
+    for keyword, simple_name in mapping.items():
+        if re.search(keyword, description):
+            return simple_name
+    
+    return "Unknown"

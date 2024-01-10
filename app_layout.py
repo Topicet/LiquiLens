@@ -22,7 +22,7 @@ layout = html.Div([
                 'fontSize': '1.2em',
                 'padding-left': '10px',
                 'padding-right': '10px',
-                'font-family':'Tommy'
+                'font-family':'Tommy',
             },
             style_data={
                 'height': '30px',

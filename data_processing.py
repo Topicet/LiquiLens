@@ -1,16 +1,41 @@
 #Handles all the data reading and manipulation tasks. Uses Pandas to categorize transactions and calculate financial metrics.
 import os
 import pandas as panda
-import re
 from datetime import datetime
 from transactionDictionary import transactionDict
+from utils import *
 
 
-def readBankData(fileName):
-    filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", fileName)
+def readBankData():
+    USAAFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "bk_download.csv")
+    
     #filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\December", fileName)
     #filePath = os.path.join(f"C:\\Users\\joebe\\Downloads", fileName)
-    return panda.read_csv(filePath)
+
+    USAADataFrame = panda.read_csv(USAAFilePath)
+    SimmonsDataFrame = processSimmonsData()
+
+    all_columns = USAADataFrame.columns.union(SimmonsDataFrame.columns)
+
+    # Reindex both DataFrames to have the same column structure, filling missing ones with NaN or another placeholder
+    USAADataFrame = USAADataFrame.reindex(columns=all_columns)
+    SimmonsDataFrame = SimmonsDataFrame.reindex(columns=all_columns)
+
+    mergedDataFrame = panda.concat([USAADataFrame, SimmonsDataFrame], ignore_index=True)
+
+    return mergedDataFrame
+
+def processSimmonsData():
+    SimmonsFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "Transaction History_Current.csv")
+
+    SimmonsDataFrame = panda.read_csv(SimmonsFilePath)
+
+    SimmonsDataFrame.rename(columns={'Merchant Name': 'Description'}, inplace=True)
+    SimmonsDataFrame['Description'] = SimmonsDataFrame['Description'].apply(simplify_transaction_name)
+    SimmonsDataFrame['Amount'] = SimmonsDataFrame['Amount'].str.replace('$', '', regex=False).astype(float) * -1
+
+    return SimmonsDataFrame
+
 
 def categorizeTransactions(bankDataframe):
     bankDataframe = bankDataframe[~bankDataframe['Description'].apply(regexSearch_Simmons)] #Exclude simmons statements from transactions
@@ -39,7 +64,7 @@ def calculateIncomeToExpenseRatio(bankDataframe):
     return round(incomeToExpenseRatio, 2)
 
 def processData():
-    bankDataframe = readBankData("bk_download.csv")
+    bankDataframe = readBankData()
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions_dataframe = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -77,15 +102,18 @@ def processData():
     return knownTransactionsDictionaryionary, unknownTransactionsDictionary
 
 def createCategoryDataTable():
-    bankDataframe = readBankData("bk_download.csv")
+    bankDataframe = readBankData()
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
 
     positiveCashFlow = calculatePositiveCashFlow(knownTransactions)
+
     categoriesSum = knownTransactions.groupby('Category')['Amount'].sum().reset_index()
-    categoriesSum['Percentage'] = (categoriesSum['Amount'] / positiveCashFlow * 100).round(2)
+    categoriesSum['Percentage'] = (categoriesSum['Amount'] / positiveCashFlow * 100)
+    categoriesSum['Percentage'] = categoriesSum['Percentage'].map('{:,.2f} %'.format)
     categoriesSum = categoriesSum.sort_values(by='Amount', ascending=False)
+    categoriesSum['Amount'] = categoriesSum['Amount'].map('{:,.2f} $'.format)
 
     categoriesColumns = [{"name": col, "id": col} for col in categoriesSum.columns]
 
@@ -95,7 +123,7 @@ def createCategoryDataTable():
 
 def createPositiveCashFlowDictionary():
 
-    bankDataframe = readBankData("bk_download.csv")
+    bankDataframe = readBankData()
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -105,7 +133,7 @@ def createPositiveCashFlowDictionary():
 
 def createNegativeCashFlowDictionary():
 
-    bankDataframe = readBankData("bk_download.csv")
+    bankDataframe = readBankData()
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -115,7 +143,7 @@ def createNegativeCashFlowDictionary():
 
 def createNetCashFlowDictionary():
 
-    bankDataframe = readBankData("bk_download.csv")
+    bankDataframe = readBankData()
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
@@ -125,13 +153,10 @@ def createNetCashFlowDictionary():
 
 def createIncomeToExpenseRatioDictionary():
 
-    bankDataframe = readBankData("bk_download.csv")
+    bankDataframe = readBankData()
     categorizedTransactions = categorizeTransactions(bankDataframe)
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
     incomeToExpenseRatio = calculateIncomeToExpenseRatio(knownTransactions)
 
     return {'incomeToExpenseRatio': incomeToExpenseRatio}
-
-def regexSearch_Simmons(description):
-    return bool(re.search(r'(?i)simmons?', description))
