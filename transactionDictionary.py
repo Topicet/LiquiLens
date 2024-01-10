@@ -1,6 +1,6 @@
 import json
 
-file_path = "C:\\Users\\joebe\\Documents\\Finance\\LiquiLens\\JSON\\transaction_dict.json"
+file_path = "C:\\Users\\Nick\\Documents\\Finances\\Main\\JSON\\transaction_dict.json"
 
 try:
     with open(file_path, "r") as file:

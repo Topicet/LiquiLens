@@ -25,6 +25,11 @@ body {
     gap: 10px;
 }
 
+.layout-class {  /* Replace 'layout-class' with the actual class or use a different selector as needed */
+    display: flex;
+    height: 100vh; /* This sets the height to fill the entire viewport */
+}
+
 #LeftSideDiv {
     flex: 0 0 15%;  /* Don't grow or shrink, take up 20% of the space */
     max-width: 15%;  /* Don't let it take up more than 20% of the space */

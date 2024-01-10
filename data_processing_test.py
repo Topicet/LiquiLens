@@ -3,7 +3,7 @@ import pandas as pd
 from data_processing import *
 
 def initialize_test_data():
-    file_path = r"C:\\Users\\joebe\\Documents\\Finance\\LiquiLens\\Data\\TestData\\bk_download.csv"
+    file_path = r"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\TestData\\bk_download.csv"
 
     dataframe = pd.read_csv(file_path)
     return dataframe

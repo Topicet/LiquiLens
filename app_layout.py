@@ -188,4 +188,4 @@ layout = html.Div([
 
     ],  id='RightSideDiv')
 
-])  
+], className='layout-class')  
