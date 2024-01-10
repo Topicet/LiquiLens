@@ -1,8 +1,7 @@
 # Contains the layout of your Dash app. All your HTML and Dash components would go here.
-from dash import dcc, html
-from transactionDictionary import transactionDict
-from dash import dash_table
+from dash import dcc, html, dash_table
 from dash.dash_table import FormatTemplate
+from transactionDictionary import transactionDict
 
 layout = html.Div([
 
@@ -184,8 +183,8 @@ layout = html.Div([
             html.Button('Assign Category', id='assign_category_button', n_clicks=0),
 
             html.Div(id='assignment_output')  # This Div will display the result of the assignment
-        ]),
+        ], id='assignCategoryDiv'),
 
     ],  id='RightSideDiv')
 
-], className='layout-class')  
+], className='layout-class')
