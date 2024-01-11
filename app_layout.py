@@ -8,13 +8,6 @@ layout = html.Div([
 
     html.Div([
 
-        dcc.Upload(
-        id='upload-data',
-        children=html.Button('Upload File'),
-        # Allow multiple files to be uploaded
-        multiple=False
-        ), html.Div(id='output-data-upload'),
-
         dash_table.DataTable(
             id='categories-table',
             columns=[],

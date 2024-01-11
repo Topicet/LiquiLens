@@ -187,21 +187,6 @@ def register_callbacks(app: Dash):
             json_data = json.dumps(data)
 
         return None, json_data
-    
-    @app.callback(
-        Output('output-data-upload', 'children'),
-        [Input('upload-data', 'contents')],
-        [State('upload-data', 'filename')]
-    )
-    def update_output(uploaded_file_content, uploaded_file_name):
-        if uploaded_file_content is not None:
-            
-            absolute_path = os.path.abspath(uploaded_file_name)
-            print(absolute_path)
-            
-            # Write the absolute path to a text file
-            with open('file_paths.txt', 'w') as f:
-                f.write(absolute_path + '\n')
 
 
 

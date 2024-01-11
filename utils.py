@@ -10,6 +10,7 @@ def simplify_transaction_name(description):
         'steam': 'Steam',
         '7-eleven': '7-ELEVEN',
         'vapor': 'Vape',
+        'amzn': 'Amazon',
         # Add more mappings as necessary
     }
     
@@ -19,4 +20,4 @@ def simplify_transaction_name(description):
         if re.search(keyword, description):
             return simple_name
     
-    return "Unknown"
+    return keyword
