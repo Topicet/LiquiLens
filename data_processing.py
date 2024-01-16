@@ -23,7 +23,14 @@ def readBankData():
 
     mergedDataFrame = panda.concat([USAADataFrame, SimmonsDataFrame], ignore_index=True)
 
+    mergedDataFrame = dropUnusedColumns(mergedDataFrame)
+
     return mergedDataFrame
+
+def dropUnusedColumns(bankDataframe):
+    columns_to_drop = ['Posted Date', 'Reference Number', 'Activity Status', 'Activity Type', 'Card Number', 'Category', 'Merchant Category Description', 'Merchant City', 'Merchant Country Code', 'Merchant Postal Code', 'Merchant State or Province', 'Name on Card']
+    bankDataframe = bankDataframe.drop(columns_to_drop, axis=1)
+    return bankDataframe
 
 def processSimmonsData():
     SimmonsFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "Transaction History_Current.csv")
@@ -41,6 +48,7 @@ def categorizeTransactions(bankDataframe):
     bankDataframe = bankDataframe[~bankDataframe['Description'].apply(regexSearch_Simmons)] #Exclude simmons statements from transactions
     bankDataframe = bankDataframe[bankDataframe['Status'] != "Pending"]
     bankDataframe['Category'] = bankDataframe['Description'].apply(lambda x: transactionDict.get(x, "Unknown"))
+    bankDataframe.to_csv('merged_data.csv', index=False)
     return bankDataframe
 
 def calculatePositiveCashFlow(bankDataframe):
@@ -160,3 +168,7 @@ def createIncomeToExpenseRatioDictionary():
     incomeToExpenseRatio = calculateIncomeToExpenseRatio(knownTransactions)
 
     return {'incomeToExpenseRatio': incomeToExpenseRatio}
+
+
+unique_transactions = readBankData()['Description'].unique()
+print(unique_transactions)
