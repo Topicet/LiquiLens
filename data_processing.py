@@ -9,8 +9,8 @@ from utils import *
 def readBankData():
     USAAFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "bk_download.csv")
     
-    #USAAFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\December", fileName)
-    #USAAFilePath = os.path.join(f"C:\\Users\\joebe\\Downloads", "bk_download.csv")
+    #filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\December", fileName)
+    #filePath = os.path.join(f"C:\\Users\\joebe\\Downloads", fileName)
 
     USAADataFrame = panda.read_csv(USAAFilePath)
     
@@ -24,17 +24,15 @@ def readBankData():
 
     mergedDataFrame = panda.concat([USAADataFrame, SimmonsDataFrame], ignore_index=True)
 
-
     return mergedDataFrame
 
 def dropUnusedColumns(dataframe):
-    columns_to_drop = ['Status', 'Description','Original Description', 'Posted Date', 'Reference Number', 'Activity Status', 'Activity Type', 'Card Number', 'Merchant Category Description', 'Merchant City', 'Merchant Country Code', 'Merchant Postal Code', 'Merchant State or Province', 'Name on Card']
+    columns_to_drop = ['Status','Description','Original Description', 'Posted Date', 'Reference Number', 'Activity Status', 'Activity Type', 'Card Number', 'Merchant Category Description', 'Merchant City', 'Merchant Country Code', 'Merchant Postal Code', 'Merchant State or Province', 'Name on Card']
     dataframe = dataframe.drop(columns_to_drop, axis=1)
     return dataframe
 
 def processSimmonsData():
     SimmonsFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "Transaction History_Current.csv")
-    #SimmonsFilePath = os.path.join(f"C:\\Users\\joebe\\Downloads\\", "Transaction History_Current.csv")
 
     SimmonsDataFrame = panda.read_csv(SimmonsFilePath)
 
@@ -112,13 +110,18 @@ def processData():
 def createCategoryDataTable():
     bankDataframe = readBankData()
     categorizedTransactions = categorizeTransactions(bankDataframe)
+    categorizedTransactions.to_csv('merged_data.csv', index=False)
+
 
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
+    #knownTransactions.to_csv('merged_data.csv', index=False)
     knownTransactions = dropUnusedColumns(knownTransactions)
+
+    #knownTransactions.to_csv('merged_data.csv', index=False)
 
     positiveCashFlow = calculatePositiveCashFlow(knownTransactions)
 
-    categoriesSum = knownTransactions.sort_values(by=['Amount', 'Category'], ascending=[False, True])
+    categoriesSum = knownTransactions.sort_values(by=['Category', 'Amount'], ascending=[True, False])
 
     categoriesSum['Percentage'] = (categoriesSum['Amount'] / positiveCashFlow * 100)
     categoriesSum['Percentage'] = categoriesSum['Percentage'].map('{:,.2f} %'.format)
@@ -127,10 +130,11 @@ def createCategoryDataTable():
 
     categoriesColumns = [{"name": col, "id": col} for col in categoriesSum.columns]
 
+
+
     categoriesData = categoriesSum.to_dict('records')
 
     return categoriesColumns, categoriesData
-
 
 def createPositiveCashFlowDictionary():
 
