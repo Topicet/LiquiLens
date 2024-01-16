@@ -31,8 +31,8 @@ body {
 }
 
 #LeftSideDiv {
-    flex: 0 0 20%;  /* Don't grow or shrink, take up 20% of the space */
-    max-width: 20%;  /* Don't let it take up more than 20% of the space */
+    flex: 0 0 40%;  /* Don't grow or shrink, take up 20% of the space */
+    max-width: 40%;  /* Don't let it take up more than 20% of the space */
 }
 
 #RightSideDiv {

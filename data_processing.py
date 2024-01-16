@@ -28,7 +28,7 @@ def readBankData():
     return mergedDataFrame
 
 def dropUnusedColumns(dataframe):
-    columns_to_drop = ['Description','Original Description', 'Posted Date', 'Reference Number', 'Activity Status', 'Activity Type', 'Card Number', 'Merchant Category Description', 'Merchant City', 'Merchant Country Code', 'Merchant Postal Code', 'Merchant State or Province', 'Name on Card']
+    columns_to_drop = ['Status', 'Description','Original Description', 'Posted Date', 'Reference Number', 'Activity Status', 'Activity Type', 'Card Number', 'Merchant Category Description', 'Merchant City', 'Merchant Country Code', 'Merchant Postal Code', 'Merchant State or Province', 'Name on Card']
     dataframe = dataframe.drop(columns_to_drop, axis=1)
     return dataframe
 
@@ -115,13 +115,9 @@ def createCategoryDataTable():
     knownTransactions = categorizedTransactions[categorizedTransactions['Category'] != "Unknown"]
     knownTransactions = dropUnusedColumns(knownTransactions)
 
-    knownTransactions.to_csv('merged_data.csv', index=False)
-
     positiveCashFlow = calculatePositiveCashFlow(knownTransactions)
 
-    categoriesSum = knownTransactions.sort_values(by=['Category', 'Amount'], ascending=[True, False])
-
-    print(categoriesSum)
+    categoriesSum = knownTransactions.sort_values(by=['Amount', 'Category'], ascending=[False, True])
 
     categoriesSum['Percentage'] = (categoriesSum['Amount'] / positiveCashFlow * 100)
     categoriesSum['Percentage'] = categoriesSum['Percentage'].map('{:,.2f} %'.format)
@@ -129,8 +125,6 @@ def createCategoryDataTable():
     categoriesSum['Amount'] = categoriesSum['Amount'].map('{:,.2f} $'.format)
 
     categoriesColumns = [{"name": col, "id": col} for col in categoriesSum.columns]
-
-
 
     categoriesData = categoriesSum.to_dict('records')
 
