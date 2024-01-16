@@ -18,6 +18,7 @@ import plotly.express as px
 # Local application/library specific imports
 from data_processing import *
 from transactionDictionary import add_transaction
+import os
 
 def register_callbacks(app: Dash):
     @app.callback(
@@ -141,7 +142,8 @@ def register_callbacks(app: Dash):
     Output('unknown_Transactions_dropdown', 'options'),
     Input('intermediate_storage', 'children'),
     Input('updated_intermediate_storage', 'children'),
-)
+    
+    )
     def update_unknown_Transactions_dropdown(json_data, new_json_data):
 
         ctx = dash.callback_context
@@ -185,3 +187,6 @@ def register_callbacks(app: Dash):
             json_data = json.dumps(data)
 
         return None, json_data
+
+
+

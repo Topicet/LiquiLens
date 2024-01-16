@@ -1,6 +1,7 @@
 # Contains the layout of your Dash app. All your HTML and Dash components would go here.
 from dash import dcc, html, dash_table
 from dash.dash_table import FormatTemplate
+from dash import dcc
 from transactionDictionary import transactionDict
 
 layout = html.Div([

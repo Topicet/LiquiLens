@@ -7,10 +7,10 @@ from utils import *
 
 
 def readBankData():
-    USAAFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "bk_download.csv")
+    #USAAFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "bk_download.csv")
     
-    #filePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\December", fileName)
-    #filePath = os.path.join(f"C:\\Users\\joebe\\Downloads", fileName)
+    #USAAFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\December", fileName)
+    USAAFilePath = os.path.join(f"C:\\Users\\joebe\\Downloads", "bk_download.csv")
 
     USAADataFrame = panda.read_csv(USAAFilePath)
     
@@ -33,7 +33,8 @@ def dropUnusedColumns(dataframe):
     return dataframe
 
 def processSimmonsData():
-    SimmonsFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "Transaction History_Current.csv")
+    #SimmonsFilePath = os.path.join(f"C:\\Users\\Nick\\Documents\\Finances\\Main\\Data\\{datetime.now().strftime('%B')}", "Transaction History_Current.csv")
+    SimmonsFilePath = os.path.join(f"C:\\Users\\joebe\\Downloads\\", "Transaction History_Current.csv")
 
     SimmonsDataFrame = panda.read_csv(SimmonsFilePath)
 
