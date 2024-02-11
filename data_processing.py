@@ -27,7 +27,8 @@ def readBankData():
     return mergedDataFrame
 
 def dropUnusedColumns(dataframe):
-    columns_to_drop = ['Status','Description','Original Description', 'Posted Date', 'Reference Number', 'Activity Status', 'Activity Type', 'Card Number', 'Merchant Category Description', 'Merchant City', 'Merchant Country Code', 'Merchant Postal Code', 'Merchant State or Province', 'Name on Card']
+    #columns_to_drop = ['Status','Description','Original Description', 'Posted Date', 'Reference Number', 'Activity Status', 'Activity Type', 'Card Number', 'Merchant Category Description', 'Merchant City', 'Merchant Country Code', 'Merchant Postal Code', 'Merchant State or Province', 'Name on Card']
+    columns_to_drop = ['Status','Description','Original Description', 'Posted Date', 'Reference Number', 'Activity Type', 'Card Number', 'Merchant Category', 'Merchant City', 'Merchant Country', 'Merchant Zip', 'Merchant State/Province', 'Name on Card']
     dataframe = dataframe.drop(columns_to_drop, axis=1)
     return dataframe
 

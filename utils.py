@@ -11,6 +11,8 @@ def simplify_transaction_name(description):
         '7-eleven': '7-ELEVEN',
         'vapor': 'Vape',
         'amzn': 'Amazon',
+        'shell' : 'shellGas',
+        'star' : 'vape',
         # Add more mappings as necessary
     }
     
