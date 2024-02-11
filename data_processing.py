@@ -38,6 +38,7 @@ def processSimmonsData():
     SimmonsDataFrame = panda.read_csv(SimmonsFilePath)
 
     SimmonsDataFrame.rename(columns={'Merchant Name': 'Description'}, inplace=True)
+    SimmonsDataFrame.rename(columns={'Transaction Date': 'Date'}, inplace=True)
     SimmonsDataFrame['Description'] = SimmonsDataFrame['Description'].apply(simplify_transaction_name)
     SimmonsDataFrame['Amount'] = SimmonsDataFrame['Amount'].str.replace('$', '', regex=False).astype(float) * -1
 
